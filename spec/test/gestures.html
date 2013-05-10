@@ -1,5 +1,5 @@
 <!doctype html>
-<html manifest="APP.appcache">
+<html>
 <head>
     <meta charset="utf-8">
     <title>QuoJS by @soyjavi</title>
@@ -13,57 +13,31 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-        section {
-            width: 300px;
-            height: 300px;
-            background: #ccc;
-            margin: 10px;
-        }
-
-        .red {
-            background:red;
-        }
-
-        .green {
-            background: green;
-        }
+        body { margin: 0; padding: 0; }
+        section { float: left; width: 50%; height: 335px; }
+        .black { background: gray; color: white; }
+        .red { background:red; }
+        .green { background: green; }
+        .blue { background: blue; }
     </style>
 </head>
 
 <body>
+    <section class="black" data-gestures="tap,touch,hold,doubleTap"></section>
+    <section class="red" data-gestures="swipe,swipeLeft,swipeRight,swipeUp,swipeDown,swiping"></section>
+    <section class="green" data-gestures="pinch,pinching,pinchIn,pinchOut"></section>
+    <section class="blue" data-gestures="rotate,rotating,rotateLeft,rotateRight"></section>
 
-    <section class="first"></section>
-    <section class="red"></section>
-    <section class="green"></section>
-
-    <script src="../../package/quo.js"></script>
+    <script src="../../package/quo.debug.js"></script>
 
     <script>
-        var gestures =  [
-            "singleTap", "doubleTap", "hold",
-            "swipe", "-swiping", "swipeLeft", "swipeRight", "swipeUp", "swipeDown",
-            "rotate", "-rotating", "rotateLeft", "rotateRight",
-            "pinch", "-pinching", "pinchIn", "pinchOut",
-            "drag", "dragLeft", "dragRight", "dragUp", "dragDown"];
-
-        gestures.forEach(function(type) {
-            $$("section.first").on(type, function(event) {
-                $$(this).append(' | ' + type);
-            });
-        });
-
-
-        $$("section.red").tap(function() {
-            $$(this).append(' | tap');
-        });
-
-        $$(function(){
-            env = $$.environment();
-            console.error(env);
+        $$("[data-gestures]").forEach(function(el) {
+            var events = $$(el).attr("data-gestures").split(",");
+            for(var i = 0, n = events.length; i < n; i++) {
+                $$(el).bind(events[i], function(event) {
+                    $$(el).append(' | ' + event.type);
+                })
+            }
         });
     </script>
 </body>
