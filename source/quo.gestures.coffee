@@ -32,6 +32,7 @@ Quo.Gestures = do ($$ = Quo) ->
     _handle "start", ev.target, _fingers
 
   _move = (ev) ->
+    ev.preventDefault();
     return unless _started
     _originalEvent = ev or event
     _fingers = _getFingers(ev)
